@@ -128,4 +128,10 @@ class SettingsTableViewCell: UITableViewCell {
     }
     
     // MARK: - Reuse
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.accessoryType = .none
+        self.model = nil
+    }
 }
