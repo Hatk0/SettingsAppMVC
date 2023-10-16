@@ -8,6 +8,7 @@ class SettingsTableViewCell: UITableViewCell {
     var model: Settings? {
         didSet {
             settingImageView.image = UIImage(systemName: model?.image ?? "")
+            titleLabel.text = model?.title ?? ""
             setupBackgroundColor()
         }
     }
@@ -21,6 +22,12 @@ class SettingsTableViewCell: UITableViewCell {
         imageView.contentMode = .center
         imageView.clipsToBounds = true
         return imageView
+    }()
+    
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 17, weight: .regular)
+        return label
     }()
     
     // MARK: - Initializers
@@ -39,6 +46,7 @@ class SettingsTableViewCell: UITableViewCell {
     
     private func setupHierarchy() {
         addSubview(settingImageView)
+        addSubview(titleLabel)
     }
     
     private func setupLayout() {
@@ -47,6 +55,11 @@ class SettingsTableViewCell: UITableViewCell {
             make.centerY.equalToSuperview()
             make.width.equalTo(32)
             make.height.equalTo(35)
+        }
+        
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(settingImageView.snp.trailing).offset(16)
+            make.centerY.equalToSuperview()
         }
     }
     
