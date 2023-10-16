@@ -5,7 +5,10 @@ final class SettingsView: UIView {
     
     // MARK: - UI
 
-    
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        return tableView
+    }()
     
     // MARK: - Initializers
     
@@ -28,9 +31,12 @@ final class SettingsView: UIView {
     }
     
     private func setupHierarchy() {
+        addSubview(tableView)
     }
     
     private func setupLayout() {
-        
+        tableView.snp.makeConstraints { make in
+            make.top.right.bottom.left.equalToSuperview()
+        }
     }
 }
