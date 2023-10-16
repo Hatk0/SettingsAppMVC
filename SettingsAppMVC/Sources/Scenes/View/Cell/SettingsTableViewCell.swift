@@ -10,6 +10,7 @@ class SettingsTableViewCell: UITableViewCell {
             settingImageView.image = UIImage(systemName: model?.image ?? "")
             titleLabel.text = model?.title ?? ""
             setupBackgroundColor()
+            updateSwitchVisibility()
         }
     }
     
@@ -30,6 +31,14 @@ class SettingsTableViewCell: UITableViewCell {
         return label
     }()
     
+    private lazy var switchControl: UISwitch = {
+       let switchControl = UISwitch()
+        switchControl.isOn = true
+        switchControl.isEnabled = true
+        switchControl.addTarget(self, action: #selector(switchStateDidChange(_:)), for: .valueChanged)
+        return switchControl
+    }()
+    
     // MARK: - Initializers
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -47,6 +56,7 @@ class SettingsTableViewCell: UITableViewCell {
     private func setupHierarchy() {
         addSubview(settingImageView)
         addSubview(titleLabel)
+        addSubview(switchControl)
     }
     
     private func setupLayout() {
@@ -61,11 +71,36 @@ class SettingsTableViewCell: UITableViewCell {
             make.leading.equalTo(settingImageView.snp.trailing).offset(16)
             make.centerY.equalToSuperview()
         }
+        
+        switchControl.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.centerY.equalToSuperview()
+        }
     }
     
     // MARK: - Action
     
+    @objc func switchStateDidChange(_ sender: UISwitch) {
+        if sender.isOn {
+            print("Turned on")
+        } else {
+            print("Turned off")
+        }
+    }
+    
     // MARK: - Private methods
+    
+    func updateSwitchVisibility() {
+        if let title = model?.title, title == "Airplane Mode" {
+            switchControl.isHidden = false
+            accessoryType = .none
+            selectionStyle = .none
+        } else {
+            switchControl.isHidden = true
+            accessoryType = .disclosureIndicator
+            selectionStyle = .default
+        }
+    }
     
     private func setupBackgroundColor() {
         guard let title = model?.title else { return }
