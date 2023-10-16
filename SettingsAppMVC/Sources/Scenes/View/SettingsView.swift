@@ -6,11 +6,12 @@ final class SettingsView: UIView {
     private var model = Settings.model
     
     // MARK: - UI
-
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.identifier)
         tableView.dataSource = self
+        tableView.delegate = self
         return tableView
     }()
     
@@ -45,7 +46,7 @@ final class SettingsView: UIView {
     }
 }
 
-extension SettingsView: UITableViewDataSource {
+extension SettingsView: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         model.count
     }
@@ -61,5 +62,11 @@ extension SettingsView: UITableViewDataSource {
         cell?.model = modelData
         cell?.detailTextLabel?.text = modelData.description
         return cell ?? UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let setting = Settings.model[indexPath.section][indexPath.row]
+            tableView.deselectRow(at: indexPath, animated: true)
+            print("The setting is selected: \(setting.title)")
     }
 }
