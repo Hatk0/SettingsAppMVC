@@ -9,7 +9,7 @@ class SettingsTableViewCell: UITableViewCell {
         didSet {
             settingImageView.image = UIImage(systemName: model?.image ?? "")
             titleLabel.text = model?.title ?? ""
-            setupBackgroundColor()
+            settingImageView.backgroundColor = setupBackgroundColor()
             updateSwitchVisibility()
         }
     }
@@ -102,28 +102,26 @@ class SettingsTableViewCell: UITableViewCell {
         }
     }
     
-    private func setupBackgroundColor() {
-        guard let title = model?.title else { return }
+    private func setupBackgroundColor() -> UIColor {
+        guard let color = model?.color else { return .systemBackground }
         
-        switch title {
-        case "Airplane Mode":
-            settingImageView.backgroundColor = .systemOrange
-        case "Wi-Fi", "Bluetooth", "VPN", "Display & Brightness", "Home Screen", "Accessibility", "Privacy & Security":
-            settingImageView.backgroundColor = .systemBlue
-        case "Mobile Data", "Personal Hotspot", "Battery":
-            settingImageView.backgroundColor = .systemGreen
-        case "Notifications", "Sounds & Haptics", "Face ID & Passcode", "Emergency SOS":
-            settingImageView.backgroundColor = .systemRed
-        case "Focus", "Screen Time":
-            settingImageView.backgroundColor = .blue
-        case "General", "Control Centre":
-            settingImageView.backgroundColor = .lightGray
-        case "Wallpaper":
-            settingImageView.backgroundColor = .systemCyan
-        case "Siri & Search":
-            settingImageView.backgroundColor = .black
-        default:
-            settingImageView.backgroundColor = .black
+        switch color {
+        case .systemBlue:
+            return .systemBlue
+        case .systemOrange:
+            return .systemOrange
+        case .systemGreen:
+            return .systemGreen
+        case .systemRed:
+            return .systemRed
+        case .blue:
+            return .blue
+        case .lightGray:
+            return .lightGray
+        case .systemCyan:
+            return .systemCyan
+        case .black:
+            return .black
         }
     }
     
